@@ -1,0 +1,7 @@
+*.sqlite3
+/venv/
+/testing/__pycache__/
+.idea/
+/testing/secrets.py
+**/__pycache__
+**/migrations

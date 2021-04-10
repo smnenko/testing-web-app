@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Web application for testing - Main page</title>
+</head>
+<body>
+    {% include "header.html" %}
+    <div class="container">
+        <h2>
+            Web application for testing
+        </h2>
+        <p>
+            Приложение, выбранное в качестве темы для курсового проекта. Выполнено на языке программирования
+            <strong>Python</strong> с использованием фреймворка <strong>Django</strong>. В качестве базы данных
+            выступила SQLite3, которая по умолчанию поддерживается как Python, так и Django.
+        </p>
+        <h4>Почему Python?</h4>
+        <p>
+            Python - это высокоуровневый, набирающий высокую популярность язык программирования, новые версии которого
+            стабильно выходят раз в месяц-два. Этот язык программирования официально не подвергался никакой
+            стандартизации, однако благодаря стандартам <strong>PEP8</strong> и принципам <strong>SOLID</strong>
+            программировать на Python стало на самом деле легко. В 2018 году Python занял первое место в рейтинге
+            <strong>TIOBE</strong> среди самых популярных языков программирования.
+        </p>
+        <h4>Коротко о Django</h4>
+        <p>
+            Django - это высокоуровневый веб-фреймворк с открытым исходным кодом, который обеспечивает быструю
+            разработку, а так же чистый и прагматичный дизайн. Django позволяет разработчикам сосредоточиться именно
+            на написании чистого и красивого кода, а не на "изобретении колеса".
+        </p>
+        {% include "footer.html" %}
+    </div>
+</body>
+</html>

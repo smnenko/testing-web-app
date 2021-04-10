@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    </head>
+    <body  id="element">
+    {% include "header.html" %}
+        <div class="container">
+            {% if not unavailable and not message %}
+                <form method="post" action="/api/answer" id="form" class="form">
+                    {% csrf_token %}
+                    <h4>{{ question }}</h4>
+                    <input type="hidden" name="test" value="{{ test }}" />
+                    <input type="hidden" name="question" value="{{ question_number }}" />
+                    <ul class="lits-group">
+                        <p>
+                            Вопрос {{ number }} из {{ count }}
+                        </p>
+                        {% for choice in choices %}
+                        <li class="list-group-item">
+                            <label class="form-check-label" for="{{ forloop.counter }}" style="margin-left:25px; width: 100%; height: 100%"><input class="form-check-input" type="radio" id="{{ forloop.counter }}" name="answer" value="{{ choice }}"/>{{ choice }}</label>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <button type="submit" class="btn btn-primary" >Отправить</button>
+                </form>
+            {% elif unavailable %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Внимание!</strong> У вас есть 1 незаконченный тест: <a href="/api/test"><strong>{{ uncompleted }}</strong></a>
+                <hr />
+                Вы не сможете начать новый тест, пока не закончите старый
+                <form method="POST" action="/api/delete">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary" style="margin-top: 10px">Завершить тест</button>
+                </form>
+            </div>
+            {% endif %}
+        {% include "footer.html" %}
+        </div>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+        $(function() {
+            $('body').on('submit', '.form', function(e){
+                var $form = $(this);
+            $.ajax({
+                type: $form.attr('method'),
+                url: $form.attr('action'),
+                data: $form.serialize()
+            }).done(function() {
+
+                $.ajax({
+	            url: '/api/test',
+	            method: 'get',
+	            dataType: 'html',
+	            success: function(data){
+	                var element = document.getElementById("element");
+	                while(element.firstChild){
+	                    element.removeChild(element.firstChild);
+	                }
+                    element.innerHTML = data;
+	            }
+
+            });
+
+            }).fail(function() {
+                console.log('fail');
+            });
+
+            //отмена действия по умолчанию для кнопки submit
+            e.preventDefault();
+            });
+        });
+    </script>
+    </body>
+</html>

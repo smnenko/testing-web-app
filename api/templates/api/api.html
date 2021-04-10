@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+<body>
+{% include "header.html" %}
+<div class="container">
+    {% if uncompleted %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Внимание!</strong> У вас есть 1 незаконченный тест: <a href="/api/test"><strong>{{ uncompleted }}</strong></a>
+        <hr />
+        Вы не сможете начать новый тест, пока не закончите старый
+        <form method="POST" action="/api/delete">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary" style="margin-top: 10px">Завершить тест</button>
+        </form>
+    </div>
+    {% elif message %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}{{ test }}
+        <a href="/api"><h5>Вернуться к списку тестов</h5></a>
+    </div>
+    {% endif %}
+    <ul>
+        {% for test in tests %}
+        <li class="card" style="max-height: 500px;width: 30%; margin-left: 10px; display: inline-block;">
+            <img class="card-img-top" style="margin-bottom: 10px"
+                     src="{{ test.img_url }}"
+                     alt="" width="265px" height="141px">
+            <div style="padding: 10px;max-height:206px">
+                    <h5 class="card-title">{{ test }}</h5>
+                    <p class="card-text" style="max-height: 150px; height: 150px;overflow: hidden;">{{ test.description }}</p>
+                </div>
+            <form method="POST" action="/api/test">
+                {% csrf_token %}
+                <input type="hidden" name="test" value="{{ test.pk }}"/>
+                <button type="submit" class="btn btn-primary" style="width:100%">Пройти тест</button>
+            </form>
+            <form method="POST" action="/api/results">
+                {% csrf_token %}
+                <input type="hidden" name="test" value="{{ test.pk }}"/>
+                <button type="submit" class="btn btn-secondary" style="margin-top: 5px; width: 100%">Результаты</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    {% include "footer.html" %}
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<script>
+</script>
+</body>
+</html>
